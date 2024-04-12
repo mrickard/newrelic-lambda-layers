@@ -19,6 +19,9 @@ on:
         required: true
         type: string
 
+env:
+  release_tag: ''
+
 jobs:
   publish-node:
     runs-on: ubuntu-latest
