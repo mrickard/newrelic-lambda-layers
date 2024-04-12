@@ -128,5 +128,7 @@ jobs:
             echo "release_tag=${{ github.event.ref }}" >> "$GITHUB_ENV"
           fi
         shell: bash
+      - name: Check release tag
+        run: echo ${{ env.release_tag }}
     if: ${{ always() }}
     needs: [publish-node, publish-python, publish-java, publish-extension]
