@@ -43,7 +43,8 @@ jobs:
           if [[ ${{ env.release_tag }} =~ ^refs/tags/v[0-9]+(\.[0-9]+)*_nodejs/$ ]]; then
               echo "match=true" >> $GITHUB_OUTPUT
           else 
-              echo "::setFailed::Invalid tag"
+              echo "::error::Invalid tag"
+              exit 1
           fi
       - name: Run Node ${{ matrix.node-version }} unit tests
         if: steps.node-check-tag.outputs.match == 'true'
