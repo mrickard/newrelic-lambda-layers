@@ -42,6 +42,7 @@ jobs:
         if: steps.python-check-tag.outputs.match == 'true'
         run: pip install -U awscli
       - name: Publish Python ${{ matrix.python-version }} layer
+        if: steps.python-check-tag.outputs.match == 'true'
         run: |
           cd python
           ./publish-layers.sh python${{ matrix.python-version }}

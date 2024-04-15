@@ -42,6 +42,7 @@ jobs:
         if: steps.extension-check-tag.outputs.match == 'true'
         run: pip install -U awscli
       - name: Publish extension layer
+        if: steps.python-check-tag.outputs.match == 'true'
         run: |
           cd extension
           ./publish-layer.sh
