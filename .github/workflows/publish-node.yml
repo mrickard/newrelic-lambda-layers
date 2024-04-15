@@ -40,7 +40,9 @@ jobs:
       - name: Check Tag
         id: node-check-tag
         run: |
-          if [[ ${{ env.release_tag }} =~ ^refs/tags/v[0-9]+(\.[0-9]+)*_nodejs/$ ]]; then
+          if [[ ${{ github.event.ref }} =~ ^refs/tags/v[0-9]+(\.[0-9]+)*_nodejs/$ ]]; then
+              echo "match=true" >> $GITHUB_OUTPUT
+          elif [[ ${{ env.release_tag }} =~ ^v[0-9]+(\.[0-9]+)*_nodejs$ ]]; then
               echo "match=true" >> $GITHUB_OUTPUT
           else 
               echo "::error::Invalid tag"
