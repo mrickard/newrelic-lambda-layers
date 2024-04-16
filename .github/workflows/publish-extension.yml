@@ -2,7 +2,8 @@ name: Publish Extension Layer
 
 on:
   push:
-    tags: [master]
+    tags:
+      - v**_extension
   workflow_dispatch:
     inputs:
       tag:

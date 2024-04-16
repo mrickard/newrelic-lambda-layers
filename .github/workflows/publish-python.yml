@@ -2,7 +2,8 @@ name: Publish Python Layers
 
 on:
   push:
-    tags: [master]
+    tags:
+      - v**_python
   workflow_dispatch:
     inputs:
       tag:

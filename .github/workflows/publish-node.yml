@@ -2,7 +2,8 @@ name: Publish Node Layers
 
 on:
   push:
-    tags: [master]
+    tags:
+      - v**_nodejs
   workflow_dispatch:
     inputs:
       tag:
