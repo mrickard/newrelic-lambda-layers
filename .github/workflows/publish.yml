@@ -30,6 +30,7 @@ jobs:
   publish-layers:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Set env var
         id: release_tag
         run: |
@@ -58,13 +59,13 @@ jobs:
         shell: bash
       - name: Start Node Publish Workflow
         if: steps.check-tag.outputs.layer_type == 'nodejs'
-        uses: ./github/actions/publish-node
+        uses: ./github/actions/publish-node/
       - name: Start Python Publish Workflow
         if: steps.check-tag.outputs.layer_type == 'python'
-        uses: ./github/actions/publish-python
+        uses: ./github/actions/publish-python/
       - name: Start Java Publish Workflow
         if: steps.check-tag.outputs.layer_type == 'java'
-        uses: ./github/actions/publish-java
+        uses: ./github/actions/publish-java/
       - name: Start Extension Publish Workflow
         if: steps.check-tag.outputs.layer_type == 'extension'
-        uses: ./github/actions/publish-extension
+        uses: ./github/actions/publish-extension/
