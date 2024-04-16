@@ -4,12 +4,6 @@ on:
   push:
     tags:
       - v**_python
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Enter a tag to publish a Python layer.'
-        required: true
-        type: string
 
 jobs:
   publish-python:
@@ -24,10 +18,6 @@ jobs:
         run: |
           if [[ ${{ github.event.ref }} =~ ^refs/tags/v[0-9]+(\.[0-9]+)*_python$ ]]; then
               echo "match=true" >> $GITHUB_OUTPUT
-          elif [[ ${{ github.event.inputs.tag }} =~ ^v[0-9]+(\.[0-9]+)*_python$ ]]; then
-              echo "match=true" >> $GITHUB_OUTPUT
-          else
-              echo "Not publishing Python layer; skipping"
           fi
       - name: Install python dependencies
         if: steps.python-check-tag.outputs.match == 'true'

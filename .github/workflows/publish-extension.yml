@@ -4,12 +4,6 @@ on:
   push:
     tags:
       - v**_extension
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Enter a tag to publish an Extension layer.'
-        required: true
-        type: string
 
 jobs:
   publish-extension:
@@ -24,10 +18,6 @@ jobs:
         run: |
           if [[ ${{ github.event.ref }} =~ ^refs/tags/v[0-9]+(\.[0-9]+)*_extension$ ]]; then
               echo "match=true" >> $GITHUB_OUTPUT
-          elif [[ ${{ github.event.inputs.tag }} =~ ^v[0-9]+(\.[0-9]+)*_extension$ ]]; then
-              echo "match=true" >> $GITHUB_OUTPUT
-          else
-              echo "Not publishing Extension layer; skipping"
           fi
       - name: Install publish dependencies
         if: steps.extension-check-tag.outputs.match == 'true'

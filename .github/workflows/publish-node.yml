@@ -4,12 +4,6 @@ on:
   push:
     tags:
       - v**_nodejs
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Enter a tag to publish a Node layer.'
-        required: true
-        type: string
 
 jobs:
   publish-node:
@@ -28,10 +22,6 @@ jobs:
         run: |
           if [[ ${{ github.event.ref }} =~ ^refs/tags/v[0-9]+(\.[0-9]+)*_nodejs$ ]]; then
               echo "match=true" >> $GITHUB_OUTPUT
-          elif [[ ${{ github.event.inputs.tag }} =~ ^v[0-9]+(\.[0-9]+)*_nodejs$ ]]; then
-              echo "match=true" >> $GITHUB_OUTPUT
-          else
-              echo "New tag is not for Node layer; skipping"
           fi
       - name: Run Node ${{ matrix.node-version }} unit tests
         if: steps.node-check-tag.outputs.match == 'true'
