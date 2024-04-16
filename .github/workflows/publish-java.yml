@@ -27,8 +27,7 @@ jobs:
           elif [[ ${{ github.event.inputs.tag }} =~ ^v[0-9]+(\.[0-9]+)*_java$ ]]; then
               echo "match=true" >> $GITHUB_OUTPUT
           else
-              echo "Not publishing Java layer; exiting"
-              exit 0
+              echo "Not publishing Java layer; skipping"
           fi
       - name: Publish ${{ matrix.java-version }} layer
         if: steps.java-check-tag.outputs.match == 'true'

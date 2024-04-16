@@ -30,15 +30,16 @@ jobs:
           elif [[ ${{ github.event.inputs.tag }} =~ ^v[0-9]+(\.[0-9]+)*_nodejs$ ]]; then
               echo "match=true" >> $GITHUB_OUTPUT
           else
-              echo "Not publishing Node layer; exiting"
-              exit 0
+              echo "New tag is not for Node layer; skipping"
           fi
       - name: Run Node ${{ matrix.node-version }} unit tests
         if: steps.node-check-tag.outputs.match == 'true'
         run: cd nodejs && npm ci && npm run test
       - name: Publish layer
+        if: steps.node-check-tag.outputs.match == 'true'
         run: make publish-nodejs${{ matrix.node-version }}x-ci
       - name: Upload Unit Test Coverage
+        if: steps.node-check-tag.outputs.match == 'true'
         uses: codecov/codecov-action@v3
         with:
          token: ${{ secrets.CODECOV_TOKEN }}
