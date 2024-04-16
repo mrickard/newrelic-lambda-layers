@@ -6,12 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Enter a tagged release to publish.'
+        description: 'Enter a tag to publish a Python layer.'
         required: true
         type: string
-
-env:
-  release_tag: ''
 
 jobs:
   publish-python:
@@ -21,22 +18,16 @@ jobs:
         python-version: [ 3.7, 3.8, 3.9, 3.10, 3.11, 3.12 ]
     steps:
       - uses: actions/checkout@v4
-      - name: Set tag env var
-        id: release_tag
-        run: |
-          if [[ ! -z ${{ github.event.inputs.tag }} ]]; then 
-            echo "release_tag=${{ github.event.inputs.tag }}_python" >> "$GITHUB_ENV"
-            echo "Publishing from workflow_dispatch ${{ github.event.inputs.tag }}_python"
-          else
-            echo "Publishing from GitHub event"
-            echo "release_tag=${{ github.event.ref }}" >> "$GITHUB_ENV"
-            echo "Publishing from GitHub event: new tag ${{ github.event.ref }}"
-          fi
       - name: Check Tag
         id: python-check-tag
         run: |
-          if [[ ${{ env.release_tag }} =~ ^refs/tags/v[0-9]+(\.[0-9]+)*_python/$ ]]; then
+          if [[ ${{ github.event.ref }} =~ ^refs/tags/v[0-9]+(\.[0-9]+)*_python/$ ]]; then
               echo "match=true" >> $GITHUB_OUTPUT
+          elif [[ ${{ github.event.inputs.tag }} =~ ^v[0-9]+(\.[0-9]+)*_python$ ]]; then
+              echo "match=true" >> $GITHUB_OUTPUT
+          else
+              echo "Not publishing Python layer; exiting"
+              exit 0
           fi
       - name: Install python dependencies
         if: steps.python-check-tag.outputs.match == 'true'
