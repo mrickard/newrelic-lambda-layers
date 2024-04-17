@@ -202,7 +202,8 @@ function publish_layer {
 
     hash=$( hash_file $layer_archive | awk '{ print $1 }' )
 
-    bucket_name="nr-layers-${region}"
+#    bucket_name="nr-layers-${region}"
+    bucket_name="gha-test-layers-${region}"
     s3_key="$( s3_prefix $runtime_name )/${hash}.${arch}.zip"
 
     compat_list=( $runtime_name )
@@ -240,7 +241,7 @@ function publish_layer {
       --region "$region"
     echo "Public permissions set for ${runtime_name} layer version ${layer_version} in region ${region}"
 
-    # Creating layer as a docker image and publishing it in ECR 
+    # Creating layer as a docker image and publishing it in ECR
     if [ "$region" = "us-east-1" ]; then
         publish_docker_ecr $layer_archive $region $runtime_name $arch $layer_name $layer_version
     fi
@@ -275,10 +276,10 @@ function publish_docker_ecr {
       echo "File does not start with 'dist/': $file_without_dist"
     fi
 
-    # public ecr repository name 
-    # for testing 
+    # public ecr repository name
+    # for testing
     #repository="q6k3q1g1"
-    # for prod 
+    # for prod
     repository="x6n7b2o2"
 
     # copy dockerfile
@@ -296,7 +297,7 @@ function publish_docker_ecr {
     --build-arg layer_zip=${layer_archive} \
     --build-arg file_without_dist=${file_without_dist} \
     .
-   
+
     echo "docker tag layer-nr-image-${language_flag}-${version_flag}${arch_flag}:latest public.ecr.aws/${repository}/newrelic-lambda-layers-${language_flag}:${version_flag}${arch_flag}"
     docker tag layer-nr-image-${language_flag}-${version_flag}${arch_flag}:latest public.ecr.aws/${repository}/newrelic-lambda-layers-${language_flag}:${version_flag}${arch_flag}
     echo "docker push public.ecr.aws/${repository}/newrelic-lambda-layers-${language_flag}:${version_flag}${arch_flag}"
