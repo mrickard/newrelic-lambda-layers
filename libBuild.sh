@@ -285,7 +285,7 @@ function publish_docker_ecr {
     # where are we, exactly?
     pwd
     # copy dockerfile ...unless it's already here
-    # cp ../Dockerfile .
+    cp ../Dockerfile .
 
     echo "Running : aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/${repository}"
     aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/${repository}
